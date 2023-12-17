@@ -4,6 +4,7 @@
 #include "Inscripcion.h"
 #include "ListaDifusion.h"
 #include "Certificado.h"
+#include "Usuario.h"
 using namespace std;
 
 void mostrarMenuVisitante()
@@ -46,28 +47,29 @@ int main()
     do
     {
         mostrarMenuVisitante();
+        
         if (!(cin >> opcion))
         {
             cin.clear();                                         // Limpia el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
 
-            cout << "Opción inválida. Por favor, elige una opción válida.\n";
+            cout << "\nOpción inválida. Por favor, elige una opción válida.\n";
             continue; // Continúa con la siguiente iteración del bucle
         }
 
         switch (opcion)
         {
         case 1:
-            // Lógica para registrar actividad
+            cargarActividades();
+            mostrarActividadesTotales();
             break;
         case 2:
             // Lógica para inscribirse en actividad
             break;
         case 3:
-            cout << "Saliendo del sistema...\n";
             break;
         case 4:
-            cout << "Salaiendo del sistema...\n";
+            cout << "Saliendo del sistema...\n";
             break;
         default:
             cout << "\nOpción no válida. Por favor, intente de nuevo.\n";

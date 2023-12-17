@@ -8,6 +8,7 @@ using namespace std;
 
 // Estructura para representar una actividad
 struct Actividad {
+    int id;
     string nombre;
     string descripcion;
     string fecha;
@@ -19,17 +20,12 @@ struct Actividad {
 };
 
 
+void cargarActividades();
+void guardarActividades();
 void crearActividad();
 void mostrarActividadesTotales();
 void editarActividad();
 void eliminarActividad();
-void gestionarActividades();
-// void mostrarActividades(const vector<Actividad>& actividades);
-// void registrarUsuario();
-// void inscribirseActividad();
-// void cancelarInscripcion();
-// void mostrarActividades();
-// void menu();
 
 
 #endif
