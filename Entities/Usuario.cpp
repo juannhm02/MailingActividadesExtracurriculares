@@ -1,4 +1,5 @@
 #include "Usuario.h"
+#include "menu.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -28,6 +29,7 @@ bool Usuario::iniciarSesion(const string& nombre, const string& pwd) {
 // Cerrar sesión
 void Usuario::cerrarSesion(const string& nombre) {
     cout << "Sesión cerrada." << endl;
+    mostrarMenuVisitante();
     // Implementa la lógica para cerrar la sesión
     
  }

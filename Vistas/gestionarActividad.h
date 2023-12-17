@@ -26,6 +26,8 @@ void crearActividad();
 void mostrarActividadesTotales();
 void editarActividad();
 void eliminarActividad();
+void inscribirseActividad();
+void desinscribirseActividad();
 
 
 #endif
