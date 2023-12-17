@@ -1,12 +1,15 @@
 #include "ListaDifusion.h"
 #include <iostream>
+#include <string>
 
-void ListaDifusion::agregarEmail(const std::string& email) {
+using namespace std;
+
+void ListaDifusion::agregarEmail(const string& email) {
     emails.push_back(email);
 }
 
-void ListaDifusion::enviarMensaje(const std::string& mensaje) {
+void ListaDifusion::enviarMensaje(const string& mensaje) {
     for (const auto& email : emails) {
-        std::cout << "Enviando mensaje a " << email << ": " << mensaje << std::endl;
+        cout << "Enviando mensaje a " << email << ": " << mensaje << endl;
     }
 }

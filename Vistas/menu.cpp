@@ -1,75 +1,78 @@
 #include <iostream>
-#include <string>
+#include <limits>
 #include "gestionarActividad.h"
+#include "Inscripcion.h"
+#include "ListaDifusion.h"
+#include "Certificado.h"
+using namespace std;
 
-void mostrarActividades()
+void mostrarMenuVisitante()
 {
-    std::cout << "Mostrando actividades disponibles...\n";
-    // Lógica para mostrar actividades
+    cout << "\nBienvenido al sistema de gestión de actividades extracurriculares 'Visitante'\n\n";
+    cout << "1. Ver actividades\n";
+    cout << "2. Iniciar sesión\n";
+    cout << "3. Registrarse\n";
+    cout << "4. Salir\n\n";
+    cout << "Seleccione una opción: ";
 }
 
-void registrarUsuario()
+void mostrarMenuRegistrado()
 {
-    std::cout << "Registro de nuevo usuario...\n";
-    // Lógica para registrar usuario
+    cout << "Bienvenido al sistema de gestión de actividades extracurriculares 'Registrado'\n\n";
+    cout << "1. Ver actividades\n";
+    cout << "2. Inscribirse en actividad\n";
+    cout << "3. Cancelar inscripción\n";
+    cout << "4. Log out\n";
+    cout << "5. Salir\n\n";
+    cout << "Seleccione una opción: ";
 }
 
-void inscribirseActividad()
+void mostrarMenuAdmin()
 {
-    std::cout << "Inscripción en actividad...\n";
-    // Lógica para inscribirse en una actividad
+    cout << "Bienvenido al sistema de gestión de actividades extracurriculares 'Administrador'\n\n";
+    cout << "1. Registrar actividad\n";
+    cout << "2. Eliminar actividad\n";
+    cout << "3. Modificar actividad\n";
+    cout << "4. Modificar roles\n";
+    cout << "5. Enviar lista de difusión\n";
+    cout << "6. Generar certificado\n";
+    cout << "7. Salir\n\n";
+    cout << "Seleccione una opción: ";
 }
-
-void cancelarInscripcion()
-{
-    std::cout << "Cancelar inscripción...\n";
-    // Lógica para cancelar inscripción
-}
-
-
 
 int main()
 {
     int opcion;
-
-    std::cout << "Menú de Actividades Académicas\n";
-    std::cout << "1. Mostrar Actividades\n";
-    std::cout << "2. Registrar Usuario\n";
-    std::cout << "3. Inscribirse en una Actividad\n";
-    std::cout << "4. Cancelar Inscripción\n";
-    std::cout << "5. Gestionar Actividades (Solo Administradores)\n";
-    std::cout << "6. Salir\n";
-
-    while (true)
+    do
     {
+        mostrarMenuVisitante();
+        if (!(cin >> opcion))
+        {
+            cin.clear();                                         // Limpia el estado de error de cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
 
-        std::cout << "Elige una opción: ";
-        std::cin >> opcion;
+            cout << "Opción inválida. Por favor, elige una opción válida.\n";
+            continue; // Continúa con la siguiente iteración del bucle
+        }
 
         switch (opcion)
         {
         case 1:
-            mostrarActividades();
+            // Lógica para registrar actividad
             break;
         case 2:
-            registrarUsuario();
+            // Lógica para inscribirse en actividad
             break;
         case 3:
-            inscribirseActividad();
+            cout << "Saliendo del sistema...\n";
             break;
         case 4:
-            cancelarInscripcion();
+            cout << "Salaiendo del sistema...\n";
             break;
-        case 5:
-            gestionarActividades();
-            break;
-        case 6:
-            std::cout << "Saliendo del programa...\n";
-            return 0; // Termina el programa si se selecciona la opción 6 (Salir)
         default:
-            std::cout << "Opción inválida. Por favor, elige una opción válida.\n";
+            cout << "\nOpción no válida. Por favor, intente de nuevo.\n";
+            // No hay break aquí para que el bucle continúe
         }
-    }
-
+    } while (opcion != 4); // El bucle continúa hasta que el usuario elige la opción para salir
     return 0;
 }

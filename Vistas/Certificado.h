@@ -3,12 +3,14 @@
 
 #include <string>
 
+using namespace std;
+
 class Certificado {
-    std::string idActividad;
-    std::string idUsuario;
+    string idActividad;
+    string idUsuario;
 
 public:
-    Certificado(const std::string& idAct, const std::string& idUsr);
+    Certificado(const string& idAct, const string& idUsr);
     void generarCertificado();
     void enviarCertificado();
     // Agregar más funciones según sea necesario

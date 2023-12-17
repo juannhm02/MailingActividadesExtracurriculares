@@ -1,7 +1,9 @@
 #include "Certificado.h"
 #include <iostream>
 
-Certificado::Certificado(const std::string& idAct, const std::string& idUsr)
+using namespace std;
+
+Certificado::Certificado(const string& idAct, const string& idUsr)
 : idActividad(idAct), idUsuario(idUsr) {}
 
 void Certificado::generarCertificado() {
@@ -9,5 +11,5 @@ void Certificado::generarCertificado() {
 }
 
 void Certificado::enviarCertificado() {
-    std::cout << "Enviando certificado a " << idUsuario << " por la actividad " << idActividad << std::endl;
+    cout << "Enviando certificado a " << idUsuario << " por la actividad " << idActividad << endl;
 }

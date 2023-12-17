@@ -3,13 +3,15 @@
 
 #include <string>
 
+using namespace std;
+
 class Inscripcion {
-    std::string idActividad;
-    std::string idUsuario;
+    string idActividad;
+    string idUsuario;
     bool pagoRealizado;
 
 public:
-    Inscripcion(const std::string& idAct, const std::string& idUsr, bool pago);
+    Inscripcion(const string& idAct, const string& idUsr, bool pago);
     void confirmarPago();
     // Agregar más funciones según sea necesario
 };

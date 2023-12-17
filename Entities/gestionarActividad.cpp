@@ -1,25 +1,27 @@
 #include <iostream>
+#include <limits>
+using namespace std;
 #include "gestionarActividad.h"
 
 // Vector para almacenar las actividades
-std::vector<Actividad> actividades;
+vector<Actividad> actividades;
 
 // Función para crear una nueva actividad
 void crearActividad()
 {
     Actividad actividad;
-    std::cin.ignore(); // Limpiar el búfer del teclado
+    cin.ignore(); // Limpiar el búfer del teclado
 
-    std::cout << "Nombre de la actividad: ";
-    std::getline(std::cin, actividad.nombre);
+    cout << "Nombre de la actividad: ";
+    getline(cin, actividad.nombre);
 
-    std::cout << "Descripción de la actividad: ";
-    std::getline(std::cin, actividad.descripcion);
+    cout << "Descripción de la actividad: ";
+    getline(cin, actividad.descripcion);
 
     // Puedes agregar más campos aquí según tus necesidades
 
     actividades.push_back(actividad);
-    std::cout << "Actividad creada exitosamente.\n";
+    cout << "Actividad creada exitosamente.\n";
 }
 
 // Función para mostrar todas las actividades
@@ -27,17 +29,17 @@ void mostrarActividadesTotales()
 {
     if (actividades.empty())
     {
-        std::cout << "No hay actividades disponibles.\n";
+        cout << "No hay actividades disponibles.\n";
         return;
     }
 
-    std::cout << "Lista de actividades:\n";
+    cout << "Lista de actividades:\n";
     for (const Actividad &actividad : actividades)
     {
-        std::cout << "Nombre: " << actividad.nombre << "\n";
-        std::cout << "Descripción: " << actividad.descripcion << "\n";
+        cout << "Nombre: " << actividad.nombre << "\n";
+        cout << "Descripción: " << actividad.descripcion << "\n";
         // Muestra otros campos aquí si los tienes
-        std::cout << "-----------------------\n";
+        cout << "-----------------------\n";
     }
 }
 
@@ -46,32 +48,32 @@ void editarActividad()
 {
     if (actividades.empty())
     {
-        std::cout << "No hay actividades disponibles para editar.\n";
+        cout << "No hay actividades disponibles para editar.\n";
         return;
     }
 
     int indice;
-    std::cout << "Índice de la actividad a editar: ";
-    std::cin >> indice;
+    cout << "Índice de la actividad a editar: ";
+    cin >> indice;
 
     if (indice >= 0 && indice < actividades.size())
     {
         Actividad &actividad = actividades[indice];
-        std::cin.ignore(); // Limpiar el búfer del teclado
+        cin.ignore(); // Limpiar el búfer del teclado
 
-        std::cout << "Nuevo nombre de la actividad: ";
-        std::getline(std::cin, actividad.nombre);
+        cout << "Nuevo nombre de la actividad: ";
+        getline(cin, actividad.nombre);
 
-        std::cout << "Nueva descripción de la actividad: ";
-        std::getline(std::cin, actividad.descripcion);
+        cout << "Nueva descripción de la actividad: ";
+        getline(cin, actividad.descripcion);
 
         // Puedes editar más campos aquí según tus necesidades
 
-        std::cout << "Actividad editada exitosamente.\n";
+        cout << "Actividad editada exitosamente.\n";
     }
     else
     {
-        std::cout << "Índice de actividad no válido.\n";
+        cout << "Índice de actividad no válido.\n";
     }
 }
 
@@ -80,51 +82,57 @@ void eliminarActividad()
 {
     if (actividades.empty())
     {
-        std::cout << "No hay actividades disponibles para eliminar.\n";
+        cout << "No hay actividades disponibles para eliminar.\n";
         return;
     }
 
     int indice;
-    std::cout << "Índice de la actividad a eliminar: ";
-    std::cin >> indice;
+    cout << "Índice de la actividad a eliminar: ";
+    cin >> indice;
 
     if (indice >= 0 && indice < actividades.size())
     {
         actividades.erase(actividades.begin() + indice);
-        std::cout << "Actividad eliminada exitosamente.\n";
+        cout << "Actividad eliminada exitosamente.\n";
     }
     else
     {
-        std::cout << "Índice de actividad no válido.\n";
+        cout << "Índice de actividad no válido.\n";
     }
 }
 
 void gestionarActividades()
 {
+    cout << "\nMenú de gestión de actividades (Administradores)...\n\n";
 
     int opcion;
 
-    std::cout << "Gestión de actividades (Administradores)...\n\n";
-
-    std::cout << "1. Mostrar actividades\n";
-    std::cout << "2. Crear actividad\n";
-    std::cout << "3. Editar actividad\n";
-    std::cout << "4. Eliminar actividad\n";
-    std::cout << "5. Volver hacia atrás\n";
+    cout << "1. Crear actividad\n";
+    cout << "2. Mostrar todas las actividades\n";
+    cout << "3. Editar actividad\n";
+    cout << "4. Eliminar actividad\n";
+    cout << "5. Salir\n\n";
 
     while (true)
     {
+        cout << "Elige una opción: ";
 
-        std::cout << "Elige una opción: ";
-        std::cin >> opcion;
+        if (!(cin >> opcion))
+        {
+            cin.clear();                                                   // Limpia el estado de error de cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
+
+            cout << "Opción inválida. Por favor, elige una opción válida.\n";
+            continue; // Continúa con la siguiente iteración del bucle
+        }
 
         switch (opcion)
         {
         case 1:
-            mostrarActividadesTotales();
+            crearActividad();
             break;
         case 2:
-            crearActividad();
+            mostrarActividadesTotales();
             break;
         case 3:
             editarActividad();
@@ -133,11 +141,10 @@ void gestionarActividades()
             eliminarActividad();
             break;
         case 5:
-            std::cout << "Volviendo atrás...\n";
-            break; // Termina la función si se selecciona la opción 5 (Volver al menú)
+            cout << "Saliendo del programa...\n";
+            break;
         default:
-            std::cout << "Opción inválida. Por favor, elige una opción válida.\n";
+            cout << "Opción inválida. Por favor, elige una opción válida.\n";
         }
     }
-    // Lógica para la gestión de actividades
 }

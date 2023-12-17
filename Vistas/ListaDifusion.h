@@ -4,12 +4,14 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class ListaDifusion {
-    std::vector<std::string> emails;
+    vector<string> emails;
 
 public:
-    void agregarEmail(const std::string& email);
-    void enviarMensaje(const std::string& mensaje);
+    void agregarEmail(const string& email);
+    void enviarMensaje(const string& mensaje);
     // Agregar más funciones según sea necesario
 };
 

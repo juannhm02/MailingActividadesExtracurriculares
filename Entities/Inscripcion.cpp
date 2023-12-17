@@ -1,6 +1,9 @@
 #include "Inscripcion.h"
+#include <string>
 
-Inscripcion::Inscripcion(const std::string& idAct, const std::string& idUsr, bool pago)
+using namespace std;
+
+Inscripcion::Inscripcion(const string& idAct, const string& idUsr, bool pago)
 : idActividad(idAct), idUsuario(idUsr), pagoRealizado(pago) {}
 
 void Inscripcion::confirmarPago() {
