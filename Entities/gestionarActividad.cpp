@@ -9,33 +9,18 @@ using namespace std;
 vector<Actividad> actividades;
 const string archivoActividades = "actividades.txt";
 
-// Funciones nuevas
+// Funcion obtener ID libre
+
 int obtenerSiguienteID()
 {
     if (actividades.empty())
-        return 0;
-    int maxId = 0;
-    for (auto &actividad : actividades)
     {
-        if (actividad.id > maxId)
-            maxId = actividad.id;
+        return 1;
     }
-    return maxId + 1;
+
+    return actividades.back().id + 1;
 }
 
-void cargarActividades()
-{
-    ifstream file(archivoActividades);
-    Actividad actividad;
-    while (file >> actividad.id)
-    {
-        file.ignore(); // Ignora el salto de línea después del ID
-        getline(file, actividad.nombre);
-        getline(file, actividad.descripcion);
-        actividades.push_back(actividad);
-    }
-    file.close();
-}
 
 // funcion para que un usuario se apunte en una actividad por ID
 
@@ -107,28 +92,15 @@ void desinscribirseActividad()
     cout << "Actividad editada exitosamente.\n";
 }
 
-
-void guardarActividades()
-{
-    ofstream file(archivoActividades);
-    for (auto &actividad : actividades)
-    {
-        file << actividad.id << endl;
-        file << actividad.nombre << endl;
-        file << actividad.descripcion << endl;
-    }
-    file.close();
-}
-
-// A continuación, modifica tus funciones actuales para usar el ID y para guardar/cargar del archivo
+// Funcion crear actividad
 
 void crearActividad()
 {
     Actividad actividad;
     actividad.id = obtenerSiguienteID();
-    cin.ignore(); // Limpiar el búfer del teclado
 
     cout << "Nombre de la actividad: ";
+    cin.ignore();
     getline(cin, actividad.nombre);
 
     cout << "Descripción de la actividad: ";
@@ -136,26 +108,21 @@ void crearActividad()
 
     actividades.push_back(actividad);
     guardarActividades();
-    cout << "Actividad creada exitosamente con ID " << actividad.id << ".\n";
+    cout << "Actividad creada exitosamente.\n";
 }
 
-void mostrarActividadesTotales()
-{
-    if (actividades.empty())
-    {
-        cout << "No hay actividades disponibles.\n";
-        return;
-    }
+// Funcion mostrar actividades
 
-    cout << "Lista de actividades:\n";
+void mostrarActividades()
+{
+    cout << "ID\tNombre\tDescripción\n";
     for (const Actividad &actividad : actividades)
     {
-        cout << "ID: " << actividad.id << "\n";
-        cout << "Nombre: " << actividad.nombre << "\n";
-        cout << "Descripción: " << actividad.descripcion << "\n";
-        cout << "-----------------------\n";
+        cout << actividad.id << '\t' << actividad.nombre << '\t' << actividad.descripcion << '\n';
     }
 }
+
+// Funcion editar actividad
 
 void editarActividad()
 {
@@ -190,6 +157,8 @@ void editarActividad()
     cout << "Actividad editada exitosamente.\n";
 }
 
+// Funcion eliminar actividad
+
 void eliminarActividad()
 {
     int id;
@@ -214,4 +183,45 @@ void eliminarActividad()
     actividades.erase(it);
     guardarActividades();
     cout << "Actividad eliminada exitosamente.\n";
+}
+
+// funcion para guardar actividades
+
+void guardarActividades()
+{
+    ofstream archivo(archivoActividades);
+    if (!archivo.is_open())
+    {
+        cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
+        return;
+    }
+
+    for (const Actividad &actividad : actividades)
+    {
+        archivo << actividad.id << '\n'
+                << actividad.nombre << '\n'
+                << actividad.descripcion << '\n';
+    }
+}
+
+// funcion para cargar actividades
+
+void cargarActividades()
+{
+    ifstream archivo(archivoActividades);
+    if (!archivo.is_open())
+    {
+        cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
+        return;
+    }
+
+    Actividad actividad;
+    string linea;
+    while (getline(archivo, linea))
+    {
+        actividad.id = stoi(linea);
+        getline(archivo, actividad.nombre);
+        getline(archivo, actividad.descripcion);
+        actividades.push_back(actividad);
+    }
 }

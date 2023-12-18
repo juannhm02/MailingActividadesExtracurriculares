@@ -19,11 +19,10 @@ struct Actividad {
     // Agrega otros campos necesarios aquí
 };
 
-
-void cargarActividades();
 void guardarActividades();
+void cargarActividades();
 void crearActividad();
-void mostrarActividadesTotales();
+void mostrarActividades();
 void editarActividad();
 void eliminarActividad();
 void inscribirseActividad();

@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {
+    cargarActividades();
     int opcion;
     int opcionRegistrado;
     int opcionAdmin;
@@ -35,8 +36,7 @@ int main()
         switch (opcion)
         {
         case 1:
-            cargarActividades();
-            mostrarActividadesTotales();
+            mostrarActividades();
             break;
         case 2:
             cout << "\nIniciar sesión...\n\n";
@@ -64,19 +64,18 @@ int main()
                 {
                 case 1:
 
-                    cargarActividades();
-                    mostrarActividadesTotales();
+                    mostrarActividades();
                     break;
 
                 case 2:
-                    cargarActividades();
+
                     inscribirseActividad();
-                    guardarActividades();
+
                     break;
                 case 3:
-                    cargarActividades();
+
                     desinscribirseActividad();
-                    guardarActividades();
+
                     break;
                 case 4:
                     cout << "\nCerrando sesión...\n";
@@ -117,20 +116,19 @@ int main()
                 {
                 case 1:
 
-                    cargarActividades();
                     crearActividad();
-                    guardarActividades();
+
                     break;
 
                 case 2:
-                    cargarActividades();
+
                     eliminarActividad();
-                    guardarActividades();
+
                     break;
                 case 3:
-                    cargarActividades();
+
                     editarActividad();
-                    guardarActividades();
+
                     break;
                 case 4:
                     cout << "Por favor, introduce el nombre del usuario: ";
