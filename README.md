@@ -19,7 +19,7 @@ Es importante asegurarse de que todos los ficheros de entrada estén correctamen
 Para compilar el proyecto, utiliza el siguiente comando, asegurándote de incluir todos los archivos necesarios:
 
 ```c++
-g++ -std=c++11 -o execute menu.cpp gestionarActividad.cpp Inscripcion.cpp ListaDifusion.cpp Certificado.cpp Usuario.cpp
+make
 ```
 
 ## Ejecución
@@ -27,7 +27,7 @@ g++ -std=c++11 -o execute menu.cpp gestionarActividad.cpp Inscripcion.cpp ListaD
 Para ejecutar la aplicación, ve a la carpeta donde se encuentra el ejecutable(execute), que en nuestro caso será la carpeta de /views y ejecuta el siguiente comando:
 
 ```c++
-./execute
+./aplicacion
 ```
 
 ## Resultado final
