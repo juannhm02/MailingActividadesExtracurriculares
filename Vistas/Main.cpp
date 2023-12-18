@@ -11,10 +11,14 @@ using namespace std;
 int main()
 {
     int opcion;
+    int opcionRegistrado;
+    int opcionAdmin;
     string nombre;
     string contraseña;
     string correo;
     string rol;
+    string mensaje;
+    string idActividad;
 
     do
     {
@@ -24,7 +28,7 @@ int main()
             cin.clear();                                         // Limpia el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
 
-            cout << "\nOpción inválida. Por favor, elige una opción válida.\n";
+            cout << "\nOpción no válida. Por favor, elige una opción válida.\n";
             continue; // Continúa con la siguiente iteración del bucle
         }
 
@@ -43,20 +47,20 @@ int main()
             if (!iniciarSesion(nombre, contraseña))
             {
                 break;
-            };
+            }
             do
             {
                 mostrarMenuRegistrado();
-                if (!(cin >> opcion))
+                if (!(cin >> opcionRegistrado))
                 {
                     cin.clear();                                         // Limpia el estado de error de cin
                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
 
-                    cout << "\nOpción inválida. Por favor, elige una opción válida.\n";
+                    cout << "\nOpción no válida. Por favor, elige una opción válida.\n";
                     continue; // Continúa con la siguiente iteración del bucle
                 }
 
-                switch (opcion)
+                switch (opcionRegistrado)
                 {
                 case 1:
 
@@ -75,16 +79,18 @@ int main()
                     guardarActividades();
                     break;
                 case 4:
-                    cout << "Log out...\n";
+                    cout << "\nCerrando sesión...\n";
                     break;
                 case 5:
-                    cout << "Saliendo del sistema...\n";
+                    cout << "\nSaliendo del sistema...\n\n";
                     exit(0);
                 default:
                     cout << "\nOpción no válida. Por favor, intente de nuevo.\n";
+                    continue;
                     // No hay break aquí para que el bucle continúe
                 }
-            } while (opcion != 5); // El bucle continúa hasta que el usuario elige la opción para salir
+            } while (opcionRegistrado != 4);
+            break;
         case 3:
             cout << "\nIniciar sesión...\n\n";
             cout << "Por favor, introduce tu nombre de admin: ";
@@ -94,20 +100,20 @@ int main()
             if (!iniciarSesionAdmin(nombre, contraseña))
             {
                 break;
-            };
+            }
             do
             {
                 mostrarMenuAdmin();
-                if (!(cin >> opcion))
+                if (!(cin >> opcionAdmin))
                 {
                     cin.clear();                                         // Limpia el estado de error de cin
                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta
 
-                    cout << "\nOpción inválida. Por favor, elige una opción válida.\n";
+                    cout << "\nOpción no válida. Por favor, elige una opción válida.\n";
                     continue; // Continúa con la siguiente iteración del bucle
                 }
 
-                switch (opcion)
+                switch (opcionAdmin)
                 {
                 case 1:
 
@@ -127,19 +133,33 @@ int main()
                     guardarActividades();
                     break;
                 case 4:
+                    cout << "Por favor, introduce el nombre del usuario: ";
+                    cin >> nombre;
+                    cout << "Por favor, introduce el rol del usuario: ";
+                    cin >> rol;
+                    modificarRol(nombre, rol);
+                    break;
                 case 5:
+                    cout << "Por favor, introduce el mensajea enviar: ";
+                    cin >> mensaje;
+                    enviarMensaje(mensaje);
+                    break;
                 case 6:
+                    generarCertificado(nombre, idActividad);
+                    enviarCertificado(nombre, idActividad);
+                    break;
                 case 7:
-                    cout << "Log out...\n";
+                    cout << "\nCerrando sesión...\n";
                     break;
                 case 8:
-                    cout << "Saliendo del sistema...\n";
+                    cout << "\nSaliendo del sistema...\n\n";
                     exit(0);
                 default:
                     cout << "\nOpción no válida. Por favor, intente de nuevo.\n";
-                    // No hay break aquí para que el bucle continúe
+                    continue;
                 }
-            } while (opcion != 8); // El bucle continúa hasta que el usuario elige la opción para salir
+            } while (opcionAdmin != 7);
+            break;
         case 4:
             cout << "\nRegistro...\n\n";
             cout << "Por favor, introduce tu nombre de usuario: ";
@@ -151,11 +171,11 @@ int main()
             registrarUsuario(nombre, contraseña, correo);
             break;
         case 5:
-            cout << "Saliendo del sistema...\n";
+            cout << "\nSaliendo del sistema...\n\n";
             exit(0);
         default:
             cout << "\nOpción no válida. Por favor, intente de nuevo.\n";
-            // No hay break aquí para que el bucle continúe
+            continue;
         }
     } while (opcion != 5); // El bucle continúa hasta que el usuario elige la opción para salir
     return 0;

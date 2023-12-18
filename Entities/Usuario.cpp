@@ -7,13 +7,6 @@ using namespace std;
 // Ruta al archivo de usuarios
 const string archivoUsuarios = "archivoUsuarios.txt";
 
-// Cerrar sesión
-void cerrarSesion(const string &nombre)
-{
-    cout << "Sesión cerrada." << endl;
-    mostrarMenuVisitante();
-}
-
 // verificarExistenciaUsuario
 bool verificarExistenciaUsuario(const string &nombre)
 {
@@ -21,7 +14,7 @@ bool verificarExistenciaUsuario(const string &nombre)
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return false;
     }
 
@@ -46,7 +39,7 @@ void registrarUsuario(const string &nombre, const string &pwd, const string &cor
 {
     if (verificarExistenciaUsuario(nombre))
     {
-        cout << "El usuario ya existe." << endl;
+        cout << "\nEl usuario ya existe." << endl;
         return;
     }
 
@@ -54,14 +47,14 @@ void registrarUsuario(const string &nombre, const string &pwd, const string &cor
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return;
     }
 
     string rol = "Estudiante";
     archivo << nombre << "," << pwd << "," << correo << "," << rol << endl;
     archivo.close();
-    cout << "Usuario registrado." << endl;
+    cout << "\nUsuario registrado." << endl;
 }
 
 // modifcar Rol
@@ -70,7 +63,7 @@ void modificarRol(const string &nombre, const string &rol)
 {
     if (!verificarExistenciaUsuario(nombre))
     {
-        cout << "El usuario no existe." << endl;
+        cout << "\nEl usuario no existe." << endl;
         return;
     }
 
@@ -79,13 +72,13 @@ void modificarRol(const string &nombre, const string &rol)
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return;
     }
 
     if (!archivoTemporal.is_open())
     {
-        cout << "Error al abrir el archivo temporal." << endl;
+        cout << "\nError al abrir el archivo temporal." << endl;
         return;
     }
 
@@ -100,7 +93,11 @@ void modificarRol(const string &nombre, const string &rol)
         }
         else
         {
-            archivoTemporal << nombre << "," << rol << endl;
+            size_t pos2 = linea.find(",", pos + 1);
+            size_t pos3 = linea.find(",", pos2 + 1);
+            string pwd = linea.substr(pos + 1, pos2 - pos - 1);
+            string correo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
+            archivoTemporal << nombre << "," << pwd << "," << correo << "," << rol << endl;
         }
     }
 
@@ -110,7 +107,7 @@ void modificarRol(const string &nombre, const string &rol)
     remove(archivoUsuarios.c_str());
     rename("archivoTemporal.txt", archivoUsuarios.c_str());
 
-    cout << "Rol modificado." << endl;
+    cout << "\nRol modificado." << endl;
 }
 
 // eliminarUsuario
@@ -119,7 +116,7 @@ void eliminarUsuario(const string &nombre)
     // Verificar si el usuario existe
     if (!verificarExistenciaUsuario(nombre))
     {
-        cout << "El usuario no existe." << endl;
+        cout << "\nEl usuario no existe." << endl;
         return;
     }
 
@@ -129,13 +126,13 @@ void eliminarUsuario(const string &nombre)
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return;
     }
 
     if (!archivoTemporal.is_open())
     {
-        cout << "Error al abrir el archivo temporal." << endl;
+        cout << "\nError al abrir el archivo temporal." << endl;
         return;
     }
 
@@ -156,7 +153,7 @@ void eliminarUsuario(const string &nombre)
     remove(archivoUsuarios.c_str());
     rename("archivoTemporal.txt", archivoUsuarios.c_str());
 
-    cout << "Usuario eliminado." << endl;
+    cout << "\nUsuario eliminado." << endl;
 }
 
 // Iniciar sesión verificando existencia usuario
@@ -165,7 +162,7 @@ bool iniciarSesion(const string &nombre, const string &pwd)
 {
     if (!verificarExistenciaUsuario(nombre))
     {
-        cout << "El usuario no existe." << endl;
+        cout << "\nEl usuario no existe." << endl;
         return false;
     }
 
@@ -173,7 +170,7 @@ bool iniciarSesion(const string &nombre, const string &pwd)
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return false;
     }
 
@@ -186,13 +183,13 @@ bool iniciarSesion(const string &nombre, const string &pwd)
         string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
         if (nombreUsuarioEnArchivo == nombre && pwdUsuarioEnArchivo == pwd)
         {
-            cout << "Sesión iniciada." << endl;
+            cout << "\nSesión iniciada." << endl;
             return true;
         }
     }
 
     archivo.close();
-    cout << "Contraseña incorrecta." << endl;
+    cout << "\nContraseña incorrecta." << endl;
     return false;
 }
 
@@ -204,7 +201,7 @@ void mostrarUsuarios()
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return;
     }
 
@@ -232,7 +229,7 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
 {
     if (!verificarExistenciaUsuario(nombre))
     {
-        cout << "El usuario no existe." << endl;
+        cout << "\nEl usuario no existe." << endl;
         return false;
     }
 
@@ -240,7 +237,7 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
 
     if (!archivo.is_open())
     {
-        cout << "Error al abrir el archivo de usuarios." << endl;
+        cout << "\nError al abrir el archivo de usuarios." << endl;
         return false;
     }
 
@@ -257,13 +254,13 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
         string rolUsuarioEnArchivo = linea.substr(pos3 + 1, pos4 - pos3 - 1);
         if (nombreUsuarioEnArchivo == nombre && pwdUsuarioEnArchivo == pwd && rolUsuarioEnArchivo == "Admin")
         {
-            cout << "Sesión iniciada." << endl;
+            cout << "\nSesión iniciada." << endl;
             return true;
         }
     }
 
     archivo.close();
-    cout << "Contraseña incorrecta." << endl;
+    cout << "\nContraseña incorrecta." << endl;
     return false;
 }
 
