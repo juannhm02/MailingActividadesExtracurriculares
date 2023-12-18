@@ -1,10 +1,24 @@
 # Makefile para compilar proyecto C++
+# Detectar arquitectura del sistema
+UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
 
 # Compilador
 CXX = g++
 
-# Opciones de compilación
-CXXFLAGS = -IEntities -IVistas -Wall -g
+# Opciones de compilación comunes
+CXXFLAGS = -IEntities -IVistas -Wall -g -Wc++11-extensions -std=c++11
+
+# Ajustar opciones de compilación para arquitecturas específicas
+ifeq ($(UNAME_S),Darwin)
+    ifeq ($(UNAME_M),arm64)
+        # Opciones para macOS arm64
+        CXXFLAGS += -O2 -march=armv8-a
+    else
+        # Opciones para otras arquitecturas en macOS
+        CXXFLAGS += -O2 -march=x86-64
+    endif
+endif
 
 # Nombre del ejecutable
 TARGET = aplicacion
