@@ -8,6 +8,13 @@
 #include "menu.h"
 using namespace std;
 
+//Instanciar un objeto de tipo inscripcion
+string idAct;
+string idUsr;
+bool pago;
+
+Inscripcion inscripcion(idAct, idUsr, pago);
+
 int main()
 {
     int opcion;
@@ -54,7 +61,88 @@ int main()
 
                 case 2:
                     cargarActividades();
-                    inscribirseActividad();
+
+                    //:TODO: Hacer que se pueda inscribir a una actividad
+                    //inscribirseActividad();
+                    
+                    
+                    switch(opcion)
+                    {
+                        case 1:
+                            //ver inscripciones de un usuario
+                            cargarActividades();
+                            mostrarActividadesTotales();
+
+
+                            break;
+                        case 2:
+                            //inscribirse a una actividad
+                            cargarActividades();
+
+                            //rellenar los datos de la actividad
+                            cout << "Ingrese el ID de la actividad a inscribirse: ";
+                            cin >> idAct;
+                            //Control de errores
+                            if (!(cin >> idAct) || (idAct < 0))
+                            {
+                                inscripcion.setIdActividad(idAct);
+                                cin.clear();
+                                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                                cout << "ID inválido.\n";
+                                return 0;
+                            }
+
+                            cout << "Ingrese el ID del usuario: ";
+                            cin >> idUsr;
+                            cout << "Ingrese si ha realizado el pago: ";
+                            cin >> pago;
+
+                            //crear la inscripcion
+                            inscripcion.inscribirseActividad(idAct, idUsr, pago);
+
+                            // if (!(cin >> idAct) || (idAct < 0)
+                            // {
+                            //     inscripcion.setIdActividad(idAct);
+                            //     cin.clear();
+                            //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            //     cout << "ID inválido.\n";
+                            //     return 0;
+                            // }
+                            // cout << "Ingrese el ID del usuario: ";
+                            // if (!(cin >> idUsr))
+                            // {
+                            //     inscripcion.setIdUsuario(idUsr);
+                            //     cin.clear();
+                            //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            //     cout << "ID inválido.\n";
+                            //     return 0;
+                            // }
+                            // cout << "Ingrese si ha realizado el pago: ";
+                            // if (!(cin >> pago) || (pago != 0 && pago != 1))
+                            // {
+                            //     inscripcion.setPagoRealizado(pago);
+                            //     cin.clear();
+                            //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            //     cout << "Pago inválido.\n";
+                            //     return 0;
+                            // }
+                            
+                            // //crear la inscripcion
+                            // inscripcion.inscribirseActividad(idAct, idUsr, pago);
+
+                            break;
+                        case 3:
+
+                            cout << "Log out...\n";
+                            break;
+                        case 4:
+                            cout << "Saliendo del sistema...\n";
+                            exit(0);
+                        default:
+                            cout << "\nOpción no válida. Por favor, intente de nuevo.\n";
+                            // No hay break aquí para que el bucle continúe
+                    }
+
                     guardarActividades();
                     break;
                 case 3:
