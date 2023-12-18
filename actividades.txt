@@ -1,0 +1,12 @@
+ID: 1
+Nombre: Curso Python
+Descripción: Curso de programacion
+Tipo: Taller
+Estado: En curso
+Aforo: 43
+Fecha: 12/12/2012
+Hora: 21:04
+Ubicación: epsc
+Ponente: juan
+Es de pago: No
+Precio: 0€
