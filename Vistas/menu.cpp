@@ -45,4 +45,12 @@ void mostrarMenuAdmin()
     cout << "Seleccione una opción: ";
 }
 
-
+void mostrarInscripciones()
+{
+    cout << "\nBienvenido al sistema de gestión de actividades extracurriculares 'Inscripciones'\n\n";
+    cout << "1. Ver inscripciones\n";
+    cout << "2. Confirmar pago\n";
+    cout << "3. Log out\n";
+    cout << "4. Salir\n\n";
+    cout << "Seleccione una opción: ";
+}

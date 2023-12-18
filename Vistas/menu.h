@@ -13,5 +13,6 @@ using namespace std;
 void mostrarMenuVisitante();
 void mostrarMenuRegistrado();
 void mostrarMenuAdmin();
+void mostrarInscripciones();
 
 #endif //

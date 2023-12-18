@@ -12,6 +12,7 @@ void Inscripcion::confirmarPago() {
     // Lógica para confirmar el pago
 }
 
+//Getters
 string Inscripcion::getIdActividad() {
     return idActividad;
 }
@@ -22,6 +23,19 @@ string Inscripcion::getIdUsuario() {
 
 bool Inscripcion::getPagoRealizado() {
     return pagoRealizado;
+}
+
+//Setters
+void Inscripcion::setIdActividad(const string& idAct) {
+    idActividad = idAct;
+}
+
+void Inscripcion::setIdUsuario(const string& idUsr) {
+    idUsuario = idUsr;
+}
+
+void Inscripcion::setPagoRealizado(bool pago) {
+    pagoRealizado = pago;
 }
 
 void Inscripcion::inscribirseActividad(const string& idAct, const string& idUsr, bool pago) {
@@ -54,3 +68,72 @@ void Inscripcion::desinscribirseActividad(const string& idAct, const string& idU
     }
     fichero.close();
 }
+
+
+//Funciones del fichero de gestionarActividad.h
+
+// void inscribirseActividad()
+// {
+//     int id;
+//     cout << "Ingrese el ID de la actividad a inscribirse: ";
+//     if (!(cin >> id))
+//     {
+//         cin.clear();
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//         cout << "ID inválido.\n";
+//         return;
+//     }
+
+//     auto it = find_if(actividades.begin(), actividades.end(), [id](const Actividad &actividad)
+//                       { return actividad.id == id; });
+
+//     if (it == actividades.end())
+//     {
+//         cout << "No se encontró la actividad con el ID " << id << ".\n";
+//         return;
+//     }
+
+//     Actividad &actividad = *it;
+//     cout << "Nombre de la actividad: ";
+//     cin.ignore();
+//     getline(cin, actividad.nombre);
+
+//     cout << "Descripción de la actividad: ";
+//     getline(cin, actividad.descripcion);
+
+//     guardarActividades();
+//     cout << "Actividad editada exitosamente.\n";
+// }
+
+// void desinscribirseActividad()
+// {
+//     int id;
+//     cout << "Ingrese el ID de la actividad a desinscribirse: ";
+//     if (!(cin >> id))
+//     {
+//         cin.clear();
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//         cout << "ID inválido.\n";
+//         return;
+//     }
+
+//     auto it = find_if(actividades.begin(), actividades.end(), [id](const Actividad &actividad)
+//                       { return actividad.id == id; });
+
+//     if (it == actividades.end())
+//     {
+//         cout << "No se encontró la actividad con el ID " << id << ".\n";
+//         return;
+//     }
+
+//     Actividad &actividad = *it;
+//     cout << "Nombre de la actividad: ";
+//     cin.ignore();
+//     getline(cin, actividad.nombre);
+
+//     cout << "Descripción de la actividad: ";
+//     getline(cin, actividad.descripcion);
+
+//     guardarActividades();
+//     cout << "Actividad editada exitosamente.\n";
+// }

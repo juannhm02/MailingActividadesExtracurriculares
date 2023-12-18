@@ -18,6 +18,10 @@ public:
     string getIdUsuario();
     bool getPagoRealizado();
 
+    void setIdActividad(const string& idAct);
+    void setIdUsuario(const string& idUsr);
+    void setPagoRealizado(bool pago);
+
     //Hacer una funcion para inscribirse a una actividad en el fichero de inscripciones
     void inscribirseActividad(const string& idAct, const string& idUsr, bool pago);
 
