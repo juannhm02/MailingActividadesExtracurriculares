@@ -11,6 +11,11 @@ using namespace std;
 int main()
 {
     int opcion;
+    string nombre;
+    string contraseña;
+    string correo;
+    string rol;
+    
     do
     {
         mostrarMenuVisitante();
@@ -74,7 +79,6 @@ int main()
                 }
             } while (opcion != 5); // El bucle continúa hasta que el usuario elige la opción para salir
         case 3:
-            int opcion;
             do
             {
                 mostrarMenuAdmin();
@@ -121,6 +125,15 @@ int main()
                 }
             } while (opcion != 8); // El bucle continúa hasta que el usuario elige la opción para salir
         case 4:
+            cout << "\nRegistro...\n\n";
+            cout << "Por favor, introduce tu nombre de usuario: ";
+            cin >> nombre;
+            cout << "Por favor, introduce tu contraseña: ";
+            cin >> contraseña;
+            cout << "Por favor, introduce tu correo: ";
+            cin >> correo;
+            registrarUsuario(nombre, contraseña, correo);
+            break;
         case 5:
             cout << "Saliendo del sistema...\n";
             exit(0);

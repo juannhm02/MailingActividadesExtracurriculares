@@ -1,9 +1,12 @@
 #include "Inscripcion.h"
+#include <iostream>
 
-Inscripcion::Inscripcion(const std::string& idAct, const std::string& idUsr, bool pago)
-: idActividad(idAct), idUsuario(idUsr), pagoRealizado(pago) {}
+using namespace std;
 
-void Inscripcion::confirmarPago() {
-    pagoRealizado = true;
-    // Lógica para confirmar el pago
+// Lógica para confirmar el pago
+
+void confirmarPago(const string& idUsuario, const string& idActividad) {
+
+    cout << "Confirmar pago de " << idUsuario << " por la actividad " << idActividad << endl;
+    
 }

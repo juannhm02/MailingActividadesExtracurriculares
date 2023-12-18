@@ -7,33 +7,53 @@ using namespace std;
 // Ruta al archivo de usuarios
 const string archivoUsuarios = "archivoUsuarios.txt";
 
-// Implementación del constructor de Usuario
-Usuario::Usuario(const string& nombre, const string& pwd, const string& role, const string& correo) {
-    nombreUsuario = nombre;
-    contrasena = pwd;
-    rol = role;
-    this->correo = correo;
-}
-
 // Iniciar sesión
-bool Usuario::iniciarSesion(const string& nombre, const string& pwd) {
-    if (nombre == nombreUsuario && pwd == contrasena) {
-        cout << "Inicio de sesión exitoso." << endl;
-        return true;
-    } else {
-        cout << "Nombre de usuario o contraseña incorrectos." << endl;
+bool iniciarSesion(const string& nombre, const string& pwd) {
+    // Verificar si el usuario existe
+    if (!verificarExistenciaUsuario(nombre)) {
+        cout << "El usuario no existe." << endl;
         return false;
     }
+
+    // Verificar si la contraseña es correcta
+    ifstream archivo(archivoUsuarios);
+
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de usuarios." << endl;
+        return false;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        if (nombreUsuarioEnArchivo == nombre) {
+            string contrasenaEnArchivo = linea.substr(pos + 1);
+            if (contrasenaEnArchivo == pwd) {
+                archivo.close();
+                cout << "Sesión iniciada." << endl;
+                mostrarMenuRegistrado();
+                return true; // Contraseña correcta
+            }
+            else {
+                cout << "Contraseña incorrecta." << endl;
+                return false; // Contraseña incorrecta
+            }
+        }
+    }
+
+    archivo.close();
+    return false; // Usuario no encontrado
 }
 
 // Cerrar sesión
-void Usuario::cerrarSesion(const string& nombre) {
+void cerrarSesion(const string& nombre) {
     cout << "Sesión cerrada." << endl;
     mostrarMenuVisitante();
-    // Implementa la lógica para cerrar la sesión
-    
- }
-bool Usuario::verificarExistenciaUsuario(const string& nombre) const {
+}
+
+// verificarExistenciaUsuario
+bool verificarExistenciaUsuario(const string& nombre) {
     ifstream archivo(archivoUsuarios);
 
     if (!archivo.is_open()) {
@@ -47,25 +67,21 @@ bool Usuario::verificarExistenciaUsuario(const string& nombre) const {
         string nombreUsuarioEnArchivo = linea.substr(0, pos);
         if (nombreUsuarioEnArchivo == nombre) {
             archivo.close();
-            return true; // Usuario encontrado
+            return true;
         }
     }
 
     archivo.close();
-    return false; // Usuario no encontrado
+    return false;
 }
 
-void Usuario::registrarUsuario(const string& nombre, const string& pwd, const string& correo) {
-    // Verificar si el usuario ya existe
-    if (Usuario::verificarExistenciaUsuario(nombre)) {
+// registarUsuario
+void registrarUsuario(const string& nombre, const string& pwd, const string& correo) {
+    if (verificarExistenciaUsuario(nombre)) {
         cout << "El usuario ya existe." << endl;
         return;
     }
 
-    // Crear un nuevo objeto Usuario
-    Usuario nuevoUsuario(nombre, pwd, "RolPorDefecto", correo);
-
-    // Abrir el archivo en modo de escritura al final
     ofstream archivo(archivoUsuarios, ios::app);
 
     if (!archivo.is_open()) {
@@ -73,9 +89,114 @@ void Usuario::registrarUsuario(const string& nombre, const string& pwd, const st
         return;
     }
 
-    archivo << nuevoUsuario.nombreUsuario << "," << nuevoUsuario.contrasena << "," << nuevoUsuario.rol << "," << nuevoUsuario.correo << endl;
+    archivo << nombre << "," << pwd << "," << correo << endl;
     archivo.close();
+    cout << "Usuario registrado." << endl;
+}
 
-    cout << "Usuario registrado exitosamente." << endl;
+// modificarRol
+void modificarRol(const string& nombre, const string& rol) {
+    // Verificar si el usuario existe
+    if (!verificarExistenciaUsuario(nombre)) {
+        cout << "El usuario no existe." << endl;
+        return;
+    }
+
+    // Modificar el rol
+    ifstream archivo(archivoUsuarios);
+    ofstream archivoTemporal("archivoTemporal.txt");
+
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de usuarios." << endl;
+        return;
+    }
+
+    if (!archivoTemporal.is_open()) {
+        cout << "Error al abrir el archivo temporal." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        if (nombreUsuarioEnArchivo == nombre) {
+            archivoTemporal << nombre << "," << rol << endl;
+        }
+        else {
+            archivoTemporal << linea << endl;
+        }
+    }
+
+    archivo.close();
+    archivoTemporal.close();
+
+    remove(archivoUsuarios.c_str());
+    rename("archivoTemporal.txt", archivoUsuarios.c_str());
+
+    cout << "Rol modificado." << endl;
+}
+
+// eliminarUsuario
+void eliminarUsuario(const string& nombre) {
+    // Verificar si el usuario existe
+    if (!verificarExistenciaUsuario(nombre)) {
+        cout << "El usuario no existe." << endl;
+        return;
+    }
+
+    // Eliminar el usuario
+    ifstream archivo(archivoUsuarios);
+    ofstream archivoTemporal("archivoTemporal.txt");
+
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de usuarios." << endl;
+        return;
+    }
+
+    if (!archivoTemporal.is_open()) {
+        cout << "Error al abrir el archivo temporal." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        if (nombreUsuarioEnArchivo != nombre) {
+            archivoTemporal << linea << endl;
+        }
+    }
+
+    archivo.close();
+    archivoTemporal.close();
+
+    remove(archivoUsuarios.c_str());
+    rename("archivoTemporal.txt", archivoUsuarios.c_str());
+
+    cout << "Usuario eliminado." << endl;
+}
+
+// mostrarUsuarios
+
+void mostrarUsuarios() {
+    ifstream archivo(archivoUsuarios);
+
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de usuarios." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        string rolUsuarioEnArchivo = linea.substr(pos + 1);
+        cout << "Nombre: " << nombreUsuarioEnArchivo << endl;
+        cout << "Rol: " << rolUsuarioEnArchivo << endl;
+        cout << endl;
+    }
+
+    archivo.close();
 }
 

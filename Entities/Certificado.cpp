@@ -1,15 +1,17 @@
-#include "Certificado.h"
 #include <iostream>
+#include "Certificado.h"
 
 using namespace std;
 
-Certificado::Certificado(const string& idAct, const string& idUsr)
-: idActividad(idAct), idUsuario(idUsr) {}
+// Lógica para generar el certificado
 
-void Certificado::generarCertificado() {
-    // Lógica para generar el certificado
+void generarCertificado(const string& idUsuario, const string& idActividad) {
+    cout << "Generando certificado para " << idUsuario << " por la actividad " << idActividad << endl;
 }
 
-void Certificado::enviarCertificado() {
+
+// Lógica para enviar el certificado
+
+void enviarCertificado(const string& idUsuario, const string& idActividad) {
     cout << "Enviando certificado a " << idUsuario << " por la actividad " << idActividad << endl;
 }

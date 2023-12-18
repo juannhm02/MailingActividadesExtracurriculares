@@ -4,12 +4,14 @@
 
 using namespace std;
 
-void ListaDifusion::agregarEmail(const string& email) {
-    emails.push_back(email);
+// Lógica para agregar un email a la lista de difusión
+
+void agregarEmail(const string& email) {
+    cout << "Agregando " << email << " a la lista de difusión" << endl;
 }
 
-void ListaDifusion::enviarMensaje(const string& mensaje) {
-    for (const auto& email : emails) {
-        cout << "Enviando mensaje a " << email << ": " << mensaje << endl;
-    }
+// Lógica para enviar un mensaje a la lista de difusión
+
+void enviarMensaje(const string& mensaje) {
+    cout << "Enviando mensaje a la lista de difusión: " << mensaje << endl;
 }

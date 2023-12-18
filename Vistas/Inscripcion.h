@@ -5,15 +5,15 @@
 
 using namespace std;
 
-class Inscripcion {
+struct Inscripcion {
     string idActividad;
     string idUsuario;
     bool pagoRealizado;
 
-public:
-    Inscripcion(const string& idAct, const string& idUsr, bool pago);
-    void confirmarPago();
-    // Agregar más funciones según sea necesario
 };
+
+    void confirmarPago(const string& idUsuario, const string& idActividad);
+    // Agregar más funciones según sea necesario
+
 
 #endif // INSCRIPCION_H
