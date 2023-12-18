@@ -15,7 +15,7 @@ int main()
     string contraseña;
     string correo;
     string rol;
-    
+
     do
     {
         mostrarMenuVisitante();
@@ -35,8 +35,16 @@ int main()
             mostrarActividadesTotales();
             break;
         case 2:
+            cout << "\nIniciar sesión...\n\n";
+            cout << "Por favor, introduce tu nombre de usuario: ";
+            cin >> nombre;
+            cout << "Por favor, introduce tu contraseña: ";
+            cin >> contraseña;
+            if (iniciarSesion(nombre, contraseña) == false)
+            {
 
-            int opcion;
+                break;
+            };
             do
             {
                 mostrarMenuRegistrado();
