@@ -58,22 +58,22 @@ void registrarUsuario(const string &nombre, const string &pwd, const string &cor
         return;
     }
 
-    archivo << nombre << "," << pwd << "," << correo << endl;
+    string rol = "Estudiante";
+    archivo << nombre << "," << pwd << "," << correo << "," << rol << endl;
     archivo.close();
     cout << "Usuario registrado." << endl;
 }
 
-// modificarRol
+// modifcar Rol
+
 void modificarRol(const string &nombre, const string &rol)
 {
-    // Verificar si el usuario existe
     if (!verificarExistenciaUsuario(nombre))
     {
         cout << "El usuario no existe." << endl;
         return;
     }
 
-    // Modificar el rol
     ifstream archivo(archivoUsuarios);
     ofstream archivoTemporal("archivoTemporal.txt");
 
@@ -94,13 +94,13 @@ void modificarRol(const string &nombre, const string &rol)
     {
         size_t pos = linea.find(",");
         string nombreUsuarioEnArchivo = linea.substr(0, pos);
-        if (nombreUsuarioEnArchivo == nombre)
+        if (nombreUsuarioEnArchivo != nombre)
         {
-            archivoTemporal << nombre << "," << rol << endl;
+            archivoTemporal << linea << endl;
         }
         else
         {
-            archivoTemporal << linea << endl;
+            archivoTemporal << nombre << "," << rol << endl;
         }
     }
 
@@ -213,11 +213,57 @@ void mostrarUsuarios()
     {
         size_t pos = linea.find(",");
         string nombreUsuarioEnArchivo = linea.substr(0, pos);
-        string rolUsuarioEnArchivo = linea.substr(pos + 1);
+        size_t pos2 = linea.find(",", pos + 1);
+        string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
+        size_t pos3 = linea.find(",", pos2 + 1);
+        string correoUsuarioEnArchivo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
         cout << "Nombre: " << nombreUsuarioEnArchivo << endl;
-        cout << "Rol: " << rolUsuarioEnArchivo << endl;
+        cout << "Contraseña: " << pwdUsuarioEnArchivo << endl;
+        cout << "Correo: " << correoUsuarioEnArchivo << endl;
         cout << endl;
     }
 
     archivo.close();
 }
+
+// Iniciar sesión (admin) verificando rol "Admin"
+
+bool iniciarSesionAdmin(const string &nombre, const string &pwd)
+{
+    if (!verificarExistenciaUsuario(nombre))
+    {
+        cout << "El usuario no existe." << endl;
+        return false;
+    }
+
+    ifstream archivo(archivoUsuarios);
+
+    if (!archivo.is_open())
+    {
+        cout << "Error al abrir el archivo de usuarios." << endl;
+        return false;
+    }
+
+    string linea;
+    while (getline(archivo, linea))
+    {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        size_t pos2 = linea.find(",", pos + 1);
+        string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
+        size_t pos3 = linea.find(",", pos2 + 1);
+        string correoUsuarioEnArchivo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
+        size_t pos4 = linea.find(",", pos3 + 1);
+        string rolUsuarioEnArchivo = linea.substr(pos3 + 1, pos4 - pos3 - 1);
+        if (nombreUsuarioEnArchivo == nombre && pwdUsuarioEnArchivo == pwd && rolUsuarioEnArchivo == "Admin")
+        {
+            cout << "Sesión iniciada." << endl;
+            return true;
+        }
+    }
+
+    archivo.close();
+    cout << "Contraseña incorrecta." << endl;
+    return false;
+}
+

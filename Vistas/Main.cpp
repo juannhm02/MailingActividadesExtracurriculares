@@ -40,9 +40,8 @@ int main()
             cin >> nombre;
             cout << "Por favor, introduce tu contraseña: ";
             cin >> contraseña;
-            if (iniciarSesion(nombre, contraseña) == false)
+            if (!iniciarSesion(nombre, contraseña))
             {
-
                 break;
             };
             do
@@ -87,6 +86,15 @@ int main()
                 }
             } while (opcion != 5); // El bucle continúa hasta que el usuario elige la opción para salir
         case 3:
+            cout << "\nIniciar sesión...\n\n";
+            cout << "Por favor, introduce tu nombre de admin: ";
+            cin >> nombre;
+            cout << "Por favor, introduce tu contraseña: ";
+            cin >> contraseña;
+            if (!iniciarSesionAdmin(nombre, contraseña))
+            {
+                break;
+            };
             do
             {
                 mostrarMenuAdmin();
