@@ -11,11 +11,15 @@ struct Actividad {
     int id;
     string nombre;
     string descripcion;
+    string tipo;
+    string estado;
+    int aforo;
     string fecha;
     string hora;
     string ubicacion;
     string ponente;
-    bool esPago;
+    string esPago;
+    float precio;
     // Agrega otros campos necesarios aquí
 };
 
