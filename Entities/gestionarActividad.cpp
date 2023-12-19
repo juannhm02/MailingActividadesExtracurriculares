@@ -397,125 +397,125 @@ void editarActividad()
     cout << "Actividad editada exitosamente.\n";
 }
 
-            // Funcion eliminar actividad
+// Funcion eliminar actividad
 
-            void eliminarActividad()
-            {
-                int id;
-                cout << "Ingrese el ID de la actividad a eliminar: ";
-                if (!(cin >> id))
-                {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cout << "ID inválido.\n";
-                    return;
-                }
+void eliminarActividad()
+{
+    int id;
+    cout << "Ingrese el ID de la actividad a eliminar: ";
+    if (!(cin >> id))
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "ID inválido.\n";
+        return;
+    }
 
-                auto it = find_if(actividades.begin(), actividades.end(), [id](const Actividad &actividad)
-                                  { return actividad.id == id; });
+    auto it = find_if(actividades.begin(), actividades.end(), [id](const Actividad &actividad)
+                        { return actividad.id == id; });
 
-                if (it == actividades.end())
-                {
-                    cout << "No se encontró la actividad con el ID " << id << ".\n";
-                    return;
-                }
+    if (it == actividades.end())
+    {
+        cout << "No se encontró la actividad con el ID " << id << ".\n";
+        return;
+    }
 
-                actividades.erase(it);
-                guardarActividades();
-                cout << "Actividad eliminada exitosamente.\n";
-            }
+    actividades.erase(it);
+    guardarActividades();
+    cout << "Actividad eliminada exitosamente.\n";
+}
 
-            // funcion para guardar actividades
+// funcion para guardar actividades
 
-            void guardarActividades()
-            {
-                ofstream archivo(archivoActividades);
-                if (!archivo.is_open())
-                {
-                    cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
-                    return;
-                }
+void guardarActividades()
+{
+    ofstream archivo(archivoActividades);
+    if (!archivo.is_open())
+    {
+        cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
+        return;
+    }
 
-                for (const Actividad &actividad : actividades)
-                {
-                    archivo << "ID: " << actividad.id << '\n'
-                            << "Nombre: " << actividad.nombre << '\n'
-                            << "Descripción: " << actividad.descripcion << '\n'
-                            << "Tipo: " << actividad.tipo << '\n'
-                            << "Estado: " << actividad.estado << '\n'
-                            << "Aforo: " << actividad.aforo << '\n'
-                            << "Fecha: " << actividad.fecha << '\n'
-                            << "Hora: " << actividad.hora << '\n'
-                            << "Ubicación: " << actividad.ubicacion << '\n'
-                            << "Ponente: " << actividad.ponente << '\n'
-                            << "Es de pago: " << actividad.esPago << '\n'
-                            << "Precio: " << actividad.precio << "€" << '\n';
-                }
-            }
+    for (const Actividad &actividad : actividades)
+    {
+        archivo << "ID: " << actividad.id << '\n'
+                << "Nombre: " << actividad.nombre << '\n'
+                << "Descripción: " << actividad.descripcion << '\n'
+                << "Tipo: " << actividad.tipo << '\n'
+                << "Estado: " << actividad.estado << '\n'
+                << "Aforo: " << actividad.aforo << '\n'
+                << "Fecha: " << actividad.fecha << '\n'
+                << "Hora: " << actividad.hora << '\n'
+                << "Ubicación: " << actividad.ubicacion << '\n'
+                << "Ponente: " << actividad.ponente << '\n'
+                << "Es de pago: " << actividad.esPago << '\n'
+                << "Precio: " << actividad.precio << "€" << '\n';
+    }
+}
 
-            // funcion para cargar actividades
+// funcion para cargar actividades
 
-            void cargarActividades()
-            {
-                ifstream archivo(archivoActividades);
-                if (!archivo.is_open())
-                {
-                    cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
-                    return;
-                }
+void cargarActividades()
+{
+    ifstream archivo(archivoActividades);
+    if (!archivo.is_open())
+    {
+        cout << "No se pudo abrir el archivo " << archivoActividades << ".\n";
+        return;
+    }
 
-                string linea;
-                Actividad actividad;
-                while (getline(archivo, linea))
-                {
-                    if (linea.find("ID: ") == 0)
-                    {
-                        actividad.id = stoi(linea.substr(4));
-                    }
-                    else if (linea.find("Nombre: ") == 0)
-                    {
-                        actividad.nombre = linea.substr(8);
-                    }
-                    else if (linea.find("Descripción: ") == 0)
-                    {
-                        actividad.descripcion = linea.substr(13);
-                    }
-                    else if (linea.find("Tipo: ") == 0)
-                    {
-                        actividad.tipo = linea.substr(6);
-                    }
-                    else if (linea.find("Estado: ") == 0)
-                    {
-                        actividad.estado = linea.substr(8);
-                    }
-                    else if (linea.find("Aforo: ") == 0)
-                    {
-                        actividad.aforo = stoi(linea.substr(7));
-                    }
-                    else if (linea.find("Fecha: ") == 0)
-                    {
-                        actividad.fecha = linea.substr(7);
-                    }
-                    else if (linea.find("Hora: ") == 0)
-                    {
-                        actividad.hora = linea.substr(6);
-                    }
-                    else if (linea.find("Ubicación: ") == 0)
-                    {
-                        actividad.ubicacion = linea.substr(11);
-                    }
-                    else if (linea.find("Ponente: ") == 0)
-                    {
-                        actividad.ponente = linea.substr(9);
-                    }
-                    else if (linea.find("Es de pago: ") == 0)
-                    {
-                        actividad.esPago = linea.substr(12);
-                    }
-                    else if (linea.find("Precio: ") == 0)
-                    {
-                        actividad.precio = stof(linea.substr(8));
-                        actividades.push_back(actividad);
-                    }
-                }
-            }
+    string linea;
+    Actividad actividad;
+    while (getline(archivo, linea))
+    {
+        if (linea.find("ID: ") == 0)
+        {
+            actividad.id = stoi(linea.substr(4));
+        }
+        else if (linea.find("Nombre: ") == 0)
+        {
+            actividad.nombre = linea.substr(8);
+        }
+        else if (linea.find("Descripción: ") == 0)
+        {
+            actividad.descripcion = linea.substr(13);
+        }
+        else if (linea.find("Tipo: ") == 0)
+        {
+            actividad.tipo = linea.substr(6);
+        }
+        else if (linea.find("Estado: ") == 0)
+        {
+            actividad.estado = linea.substr(8);
+        }
+        else if (linea.find("Aforo: ") == 0)
+        {
+            actividad.aforo = stoi(linea.substr(7));
+        }
+        else if (linea.find("Fecha: ") == 0)
+        {
+            actividad.fecha = linea.substr(7);
+        }
+        else if (linea.find("Hora: ") == 0)
+        {
+            actividad.hora = linea.substr(6);
+        }
+        else if (linea.find("Ubicación: ") == 0)
+        {
+            actividad.ubicacion = linea.substr(11);
+        }
+        else if (linea.find("Ponente: ") == 0)
+        {
+            actividad.ponente = linea.substr(9);
+        }
+        else if (linea.find("Es de pago: ") == 0)
+        {
+            actividad.esPago = linea.substr(12);
+        }
+        else if (linea.find("Precio: ") == 0)
+        {
+            actividad.precio = stof(linea.substr(8));
+            actividades.push_back(actividad);
+        }
+    }
+}
