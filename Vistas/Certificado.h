@@ -11,8 +11,9 @@ struct Certificado {
 
 };
 
+    bool actividadFinalizada(const string& idActividad);
     void generarCertificado(const string& idUsuario, const string& idActividad);
-    void enviarCertificado(const string& idUsuario, const string& idActividad);
+
     // Agregar más funciones según sea necesario
 
 
