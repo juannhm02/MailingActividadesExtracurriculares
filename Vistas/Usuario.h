@@ -8,7 +8,7 @@ using namespace std;
 struct Usuario {
     string nombreUsuario;
     string contrasena;
-    string rol;
+    string rol; // Puede ser "visitante", "registrado", "director academico" o "admin"
     string correo;
 
 };
