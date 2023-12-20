@@ -1,0 +1,14 @@
+ID: 1
+Nombre: hola
+Descripción:     hola
+Tipo: Congreso ordinario
+Estado: No iniciado
+Aforo: 45
+Fecha: 12/12/12
+Hora: 12:00
+Ubicación: cas
+Ponente: sf
+Es de pago: No
+Precio: 0€
+Inscritos: 0
+----------------------------------------
