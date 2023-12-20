@@ -4,7 +4,6 @@
 #include <iostream>
 #include <limits>
 #include "gestionarActividad.h"
-#include "Inscripcion.h"
 #include "ListaDifusion.h"
 #include "Certificado.h"
 #include "Usuario.h"

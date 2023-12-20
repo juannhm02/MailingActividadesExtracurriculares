@@ -35,7 +35,7 @@ bool verificarExistenciaUsuario(const string &nombre)
 }
 
 // registarUsuario
-void registrarUsuario(const string &nombre, const string &pwd, const string &correo)
+void registrarUsuario(const string &nombre, const string &pwd, const string &correo, const string &rol, const string &facultad)
 {
     if (verificarExistenciaUsuario(nombre))
     {
@@ -51,8 +51,7 @@ void registrarUsuario(const string &nombre, const string &pwd, const string &cor
         return;
     }
 
-    string rol = "Estudiante";
-    archivo << nombre << "," << pwd << "," << correo << "," << rol << endl;
+    archivo << nombre << "," << pwd << "," << correo << "," << rol << "," << facultad << endl;
     archivo.close();
     cout << "\nUsuario registrado." << endl;
 }
@@ -205,19 +204,13 @@ void mostrarUsuarios()
         return;
     }
 
+    cout << "\nUsuarios registrados:" << endl;
     string linea;
     while (getline(archivo, linea))
     {
         size_t pos = linea.find(",");
         string nombreUsuarioEnArchivo = linea.substr(0, pos);
-        size_t pos2 = linea.find(",", pos + 1);
-        string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
-        size_t pos3 = linea.find(",", pos2 + 1);
-        string correoUsuarioEnArchivo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
-        cout << "Nombre: " << nombreUsuarioEnArchivo << endl;
-        cout << "Contraseña: " << pwdUsuarioEnArchivo << endl;
-        cout << "Correo: " << correoUsuarioEnArchivo << endl;
-        cout << endl;
+        cout << nombreUsuarioEnArchivo << endl;
     }
 
     archivo.close();
@@ -263,4 +256,12 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
     cout << "\nContraseña incorrecta." << endl;
     return false;
 }
+
+
+
+
+
+
+
+
 

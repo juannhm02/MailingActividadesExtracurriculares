@@ -2,18 +2,20 @@
 #define INSCRIPCION_H
 
 #include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <limits>
+
+#include "Usuario.h"
+#include "gestionarActividad.h"
+
 
 using namespace std;
 
-struct Inscripcion {
-    string idActividad;
-    string idUsuario;
-    bool pagoRealizado;
 
-};
-
-    void confirmarPago(const string& idUsuario, const string& idActividad);
-    // Agregar más funciones según sea necesario
 
 
 #endif // INSCRIPCION_H
