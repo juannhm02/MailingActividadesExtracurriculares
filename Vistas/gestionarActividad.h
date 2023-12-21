@@ -44,9 +44,11 @@ struct Inscripcion
 };
 
 
+bool buscarActividadPorID(int id);
 void guardarActividades();
 void cargarActividades();
-void crearActividad();
+Actividad solicitarDatosActividad();
+void crearActividadConDatos(Actividad actividad);
 void editarActividad();
 void eliminarActividad();
 void mostrarActividadesNoIniciadas();
@@ -60,6 +62,7 @@ void generarCertificados(const string &nombreUsuario);
 void enviarListaDifusion();
 void leerListaDifusion(const string& nombreUsuario);
 void verMisCertificados(const string &nombreUsuario);
+string normalizarString(const string& str);
 
 
 #endif

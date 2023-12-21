@@ -1,4 +1,4 @@
-#include "Usuario.h"
+#include "../Vistas/Usuario.h"
 #include "menu.h"
 #include <iostream>
 #include <fstream>
@@ -257,6 +257,45 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
     return false;
 }
 
+// Iniciar sesion (Director academico) verificando rol "Director Academico"
+bool iniciarSesionDirectorAcademico(const string &nombre, const string &pwd)
+{
+    if (!verificarExistenciaUsuario(nombre))
+    {
+        cout << "\nEl usuario no existe." << endl;
+        return false;
+    }
+
+    ifstream archivo(archivoUsuarios);
+
+    if (!archivo.is_open())
+    {
+        cout << "\nError al abrir el archivo de usuarios." << endl;
+        return false;
+    }
+
+    string linea;
+    while (getline(archivo, linea))
+    {
+        size_t pos = linea.find(",");
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        size_t pos2 = linea.find(",", pos + 1);
+        string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
+        size_t pos3 = linea.find(",", pos2 + 1);
+        string correoUsuarioEnArchivo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
+        size_t pos4 = linea.find(",", pos3 + 1);
+        string rolUsuarioEnArchivo = linea.substr(pos3 + 1, pos4 - pos3 - 1);
+        if (nombreUsuarioEnArchivo == nombre && pwdUsuarioEnArchivo == pwd && rolUsuarioEnArchivo == "Director Academico")
+        {
+            cout << "\nSesión iniciada." << endl;
+            return true;
+        }
+    }
+
+    archivo.close();
+    cout << "\nContraseña incorrecta." << endl;
+    return false;
+}
 
 
 

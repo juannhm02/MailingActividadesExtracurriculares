@@ -55,9 +55,30 @@ DEP := $(OBJECTS:.o=.d)
 # Generar archivos de dependencias
 CXXFLAGS += -MMD -MP
 
-# Limpiar archivos generados
-clean:
-	rm -rf $(OBJDIR) $(TARGET)
 
-# Impedir problemas con archivos con nombres conflictivos
-.PHONY: all clean
+
+# Makefile para compilar proyecto C++ con pruebas unitarias
+
+# Nombre del ejecutable de pruebas
+TEST_TARGET = tests
+
+# Archivos fuente y objeto para las pruebas
+TEST_SOURCES := Tests.cpp
+TEST_OBJECTS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(notdir $(TEST_SOURCES)))
+
+# Regla para compilar y ejecutar las pruebas
+test: $(TEST_OBJECTS) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $^
+	./$(TEST_TARGET)
+
+# Regla para compilar archivos de pruebas
+$(OBJDIR)/%.o: %.cpp
+	mkdir -p $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Limpiar también el ejecutable de pruebas
+clean:
+	rm -rf $(OBJDIR) $(TARGET) $(TEST_TARGET)
+
+# Agregar la regla test a .PHONY
+.PHONY: all clean test
