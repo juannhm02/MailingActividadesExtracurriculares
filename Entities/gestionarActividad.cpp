@@ -33,10 +33,24 @@ int obtenerSiguienteID()
     return actividades.back().id + 1;
 }
 
-// Funcion crear actividad
+// Funcion para buscar actividad por ID
 
-void crearActividad()
+bool buscarActividadPorID(int id)
 {
+    auto it = find_if(actividades.begin(), actividades.end(), [id](const Actividad &actividad)
+                      { return actividad.id == id; });
+
+    if (it == actividades.end())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+
+// Funcion crear actividad
+Actividad solicitarDatosActividad() {
     Actividad actividad;
     actividad.id = obtenerSiguienteID();
 
@@ -47,21 +61,19 @@ void crearActividad()
     cout << "Descripción de la actividad: ";
     getline(cin, actividad.descripcion);
 
-    int tipo = 0;
-    do
-    {
+    int tipo;
+    do {
         cout << "Tipo de actividad: \n";
         cout << "1. Congreso ordinario\n";
         cout << "2. Congreso extraordinario\n";
         cout << "3. Ponencia\n";
         cout << "4. Taller\n";
         cout << "5. Seminario\n";
-        cout << "Ingrese el número correspondiente al estado: ";
+        cout << "Ingrese el número correspondiente al tipo: ";
         cin >> tipo;
-
     } while (tipo < 1 || tipo > 5);
 
-    switch (tipo)
+     switch (tipo)
     {
     case 1:
         actividad.tipo = "Congreso ordinario";
@@ -81,7 +93,6 @@ void crearActividad()
     }
 
     actividad.estado = "No iniciado";
-    cout << "Estado de actividad: " << actividad.estado << '\n';
 
     cout << "Aforo de la actividad: ";
     cin >> actividad.aforo;
@@ -99,7 +110,7 @@ void crearActividad()
     cout << "Ponente: ";
     getline(cin, actividad.ponente);
 
-    int esPago = 0;
+     int esPago = 0;
 
     do
     {
@@ -126,9 +137,10 @@ void crearActividad()
         break;
     }
 
-    actividad.inscritos = 0;
-    cout << "Inscritos: " << actividad.inscritos << '\n';
+    return actividad;
+}
 
+void crearActividadConDatos(Actividad actividad) {
     actividades.push_back(actividad);
     guardarActividades();
     cout << "Actividad creada exitosamente.\n";

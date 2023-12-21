@@ -199,7 +199,7 @@ int main()
 
                 case 4:
 
-                    crearActividad();
+                    crearActividadConDatos(solicitarDatosActividad());
 
                     break;
 
@@ -290,7 +290,7 @@ int main()
 
                 case 4:
 
-                    crearActividad();
+                    crearActividadConDatos(solicitarDatosActividad());
 
                     break;
 
