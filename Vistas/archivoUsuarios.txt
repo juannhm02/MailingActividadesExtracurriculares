@@ -1,3 +1,0 @@
-i12gocaj,hola,i12gocaj@uco.es,Admin,Medicina
-i12bania,1234,i12bania@uco.es,Admin,Derecho
-i02himoj,Juan123,i02himoj@uco.es,Admin,Politécnica
