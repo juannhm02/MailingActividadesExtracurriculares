@@ -3,12 +3,18 @@
 #include <vector>
 #include <limits>
 #include <algorithm>
+#include <cctype>
+#include <map>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
-using namespace std;
+
 #include "gestionarActividad.h"
 #include "Usuario.h"
+
+extern std::vector<std::string> facultadesAdicionales;
+
+using namespace std;
 
 vector<Actividad> actividades;
 const string archivoActividadesNoIniciadas = "actividadesNoIniciadas.txt";
@@ -141,11 +147,20 @@ void mostrarActividadesNoIniciadas()
     }
 
     string linea;
+    int count = 0;
+
     while (getline(archivoNoIniciadas, linea))
     {
         cout << linea << '\n';
+        count++;
     }
 
+    
+    if (count == 0)
+    {
+        cout << "No hay actividades no iniciadas.\n";
+    }
+    
     archivoNoIniciadas.close();
 }
 
@@ -162,11 +177,17 @@ void mostrarActividadesEnCurso()
     }
 
     string linea;
+    int count = 0;  
     while (getline(archivoEnCurso, linea))
     {
         cout << linea << '\n';
+        count++;
     }
 
+    if (count == 0)
+    {
+        cout << "No hay actividades en curso.\n";
+    }
     archivoEnCurso.close();
 }
 
@@ -183,9 +204,17 @@ void mostrarActividadesFinalizadas()
     }
 
     string linea;
+    int count = 0;
+
     while (getline(archivoFinalizadas, linea))
     {
         cout << linea << '\n';
+        count++;
+    }
+
+    if (count == 0)
+    {
+        cout << "No hay actividades finalizadas.\n";
     }
 
     archivoFinalizadas.close();
@@ -1256,135 +1285,196 @@ void verMisCertificados(const string &nombreUsuario)
     archivoCertificado.close();
 }
 
-// funcion de listadifusion que crea una carpeta donde almacena un fichero por facultad existente donde se almacenan los mensajes que se envien en cada una
+// Función para normalizar un string (convertir a minúsculas e ignorar acentos)
+string normalizarString(const string& str) {
+    map<string, char> equivalencias = {{"á", 'a'}, {"é", 'e'}, {"í", 'i'}, {"ó", 'o'}, {"ú", 'u'},
+                                       {"Á", 'a'}, {"É", 'e'}, {"Í", 'i'}, {"Ó", 'o'}, {"Ú", 'u'}};
 
-void enviarListaDifusion()
-{
-    string facultad;
+    string normalizado;
+    for (char c : str) {
+        string c_str(1, c);  // Convierte el char a un string de un solo carácter
+        if (equivalencias.find(c_str) != equivalencias.end()) {
+            normalizado += equivalencias[c_str];
+        } else if (isalpha(c)) {
+            normalizado += tolower(c);
+        } else {
+            normalizado += c;
+        }
+    }
+    return normalizado;
+}
 
+
+bool esNombreFacultadValido(const string& facultadAdicional) {
+    string facultadesPredefinidas[] = {"politecnica", "medicina", "derecho", "arte dramatico", "veterinaria"};
+    string facultadAdicionalNormalizada = normalizarString(facultadAdicional);
+
+    for (const string& facultad : facultadesPredefinidas) {
+        if (facultadAdicionalNormalizada == facultad) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void enviarListaDifusion() {
+    string facultad, facultadAdicional, mensaje; 
     int tipo = 0;
 
-    do
-    {
+    do {
         cout << "Por favor, elija la facultad a la que desea enviar el mensaje: \n";
         cout << "1. Politécnica\n";
         cout << "2. Medicina\n";
         cout << "3. Derecho\n";
         cout << "4. Arte Dramático\n";
         cout << "5. Veterinaria\n";
+        cout << "6. Enviar mensaje a otra facultad (si no está entre las anteriores):\n";
+        cout << "7. Enviar a todas las facultades\n";
         cout << "Ingrese el número correspondiente al estado: ";
         cin >> tipo;
+        cin.ignore();
+    } while (tipo < 1 || tipo > 7);
 
-    } while (tipo < 1 || tipo > 5);
+    if (tipo != 7) {
+        cout << "Ingrese el mensaje que desea enviar: ";
+        cin.ignore();
+        getline(cin, mensaje);
 
-    switch (tipo)
-    {
-    case 1:
-        facultad = "Politécnica";
-        break;
-    case 2:
-        facultad = "Medicina";
-        break;
-    case 3:
-        facultad = "Derecho";
-        break;
-    case 4:
-        facultad = "Arte Dramático";
-        break;
-    case 5:
-        facultad = "Veterinaria";
-        break;
+        // Añadir fecha y hora al mensaje
+        time_t now = time(0);
+        tm *ltm = localtime(&now);
+        mensaje = "Fecha: " + to_string(ltm->tm_mday) + "/" + to_string(1 + ltm->tm_mon) + "/" + to_string(1900 + ltm->tm_year) + "\nHora: " + to_string(ltm->tm_hour) + ":" + to_string(ltm->tm_min) + ":" + to_string(ltm->tm_sec) + "\n" + mensaje + "\n----------------------------------------\n";
     }
 
-    string nombreCarpeta = "listadifusion/" + facultad;
-    mkdir("listadifusion", 0777);       // Crear primero el directorio padre
-    mkdir(nombreCarpeta.c_str(), 0777); // Luego crear el subdirectorio
+    switch (tipo) {
+        case 1:
+            facultad = "Politécnica";
+            break;
+        case 2:
+            facultad = "Medicina";
+            break;
+        case 3:
+            facultad = "Derecho";
+            break;
+        case 4:
+            facultad = "Arte Dramático";
+            break;
+        case 5:
+            facultad = "Veterinaria";
+            break;
+        case 6:
+            do {
+                cout << "Ingrese el nombre de la facultad: ";
+                getline(cin, facultadAdicional);
+                if (!esNombreFacultadValido(facultadAdicional)) {
+                    cout << "Error: La facultad '" << facultadAdicional << "' ya está definida con anterioridad.\n";
+                }
+            } while (!esNombreFacultadValido(facultadAdicional));
+            facultad = facultadAdicional;
+            break;
+        case 7:
+            vector <string> facultades = {"Politécnica", "Medicina", "Derecho", "Arte Dramático", "Veterinaria"};
 
-    ofstream archivoMensaje(nombreCarpeta + "/mensaje.txt");
+            for (const string& fAdicional : facultadesAdicionales) {
+            facultades.push_back(fAdicional);
+    }
+            
+                string mensajeFacultad;
+                cout << "Ingrese el mensaje que desea enviar: ";
+                getline(cin, mensajeFacultad);
+                time_t now = time(0);
+                tm *ltm = localtime(&now);
+                mensajeFacultad = "Fecha: " + to_string(ltm->tm_mday) + "/" + to_string(1 + ltm->tm_mon) + "/" + to_string(1900 + ltm->tm_year) + "\nHora: " + to_string(ltm->tm_hour) + ":" + to_string(ltm->tm_min) + ":" + to_string(ltm->tm_sec) + "\n" + mensajeFacultad + "\n----------------------------------------\n";
+            
+            for (string f : facultades) {
+                 cout << "Enviando a... " << f << "\n";
 
-    if (!archivoMensaje.is_open())
-    {
-        cout << "No se pudo abrir el archivo mensaje.txt\n";
-        return;
+                string carpetaFacultad = "listadifusion/" + f;
+                mkdir("listadifusion", 0777);
+                mkdir(carpetaFacultad.c_str(), 0777);
+
+                ofstream archivoMensaje(carpetaFacultad + "/mensaje.txt");
+                if (!archivoMensaje.is_open()) {
+                    cout << "No se pudo abrir el archivo mensaje.txt para la facultad " << f << '\n';
+                    continue;
+                }
+
+                archivoMensaje << mensajeFacultad;
+                archivoMensaje.close();
+            }
+            return;
     }
 
-    cout << "Ingrese el mensaje que desea enviar: ";
-    string mensaje;
-    cin.ignore();
-    getline(cin, mensaje);
+    if (tipo != 7) {
+        string nombreCarpeta = "listadifusion/" + facultad;
+        mkdir("listadifusion", 0777);
+        mkdir(nombreCarpeta.c_str(), 0777);
 
-    // da formato al mensaje antes de guardarlo, pon fecha y hora, y separarlo por abajo con guiones
+        ofstream archivoMensaje(nombreCarpeta + "/mensaje.txt");
+        if (!archivoMensaje.is_open()) {
+            cout << "No se pudo abrir el archivo mensaje.txt\n";
+            return;
+        }
 
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    archivoMensaje << "Fecha: " << ltm->tm_mday << "/" << 1 + ltm->tm_mon << "/" << 1900 + ltm->tm_year << '\n';
-    archivoMensaje << "Hora: " << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec << '\n';
-    archivoMensaje << mensaje;
-    archivoMensaje << "----------------------------------------\n";
+        archivoMensaje << mensaje;
+        archivoMensaje.close();
 
-    archivoMensaje.close();
-
-    cout << "Mensaje enviado exitosamente.\n";
+        cout << "Mensaje enviado exitosamente.\n";
+    }
 }
+
 
 // funcion que lea el fichero de usuarios registrados y dependiendo de su facultad muestre los mensajes de difusion que se hayan enviado
 
-void leerListaDifusion(const string &nombreUsuario)
-{
+void leerListaDifusion(const string &nombreUsuario) {
     const string archivoUsuarios = "archivoUsuarios.txt";
     ifstream archivo(archivoUsuarios);
-    string faculadUsuarioEnArchivo;
 
-    if (!archivo.is_open())
-    {
-        cout << "\nError al abrir el archivo de usuarios." << endl;
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de usuarios: " << archivoUsuarios << endl;
         return;
     }
 
-    string linea;
-    while (getline(archivo, linea))
-    {
+    string linea, facultadUsuario;
+    bool usuarioEncontrado = false;
+    while (getline(archivo, linea)) {
         size_t pos = linea.find(",");
-        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        if (pos == string::npos) {
+            continue; // Saltar línea mal formateada
+        }
 
-        if (nombreUsuarioEnArchivo == nombreUsuario)
-        {
-            size_t pos2 = linea.find(",", pos + 1);
-            string pwdUsuarioEnArchivo = linea.substr(pos + 1, pos2 - pos - 1);
-            size_t pos3 = linea.find(",", pos2 + 1);
-            string correoUsuarioEnArchivo = linea.substr(pos2 + 1, pos3 - pos2 - 1);
-            size_t pos4 = linea.find(",", pos3 + 1);
-            string rolUsuarioEnArchivo = linea.substr(pos3 + 1, pos4 - pos3 - 1);
-            size_t pos5 = linea.find(",", pos4 + 1);
-            faculadUsuarioEnArchivo = linea.substr(pos4 + 1, pos5 - pos4 - 1);
+        string nombreUsuarioEnArchivo = linea.substr(0, pos);
+        if (nombreUsuarioEnArchivo == nombreUsuario) {
+            size_t pos4 = linea.rfind(",");
+            if (pos4 == string::npos) {
+                cout << "Datos del usuario mal formateados en el archivo." << endl;
+                break; // Detener la lectura del archivo
+            }
+            facultadUsuario = linea.substr(pos4 + 1);
+            usuarioEncontrado = true;
             break;
         }
     }
 
     archivo.close();
 
-    if (faculadUsuarioEnArchivo.empty())
-    {
+    if (!usuarioEncontrado) {
         cout << "No se encontró el usuario " << nombreUsuario << endl;
         return;
     }
 
-    string nombreCarpeta = "listadifusion/" + faculadUsuarioEnArchivo + "/mensaje.txt";
-
+    string nombreCarpeta = "listadifusion/" + facultadUsuario + "/mensaje.txt";
     ifstream archivoMensaje(nombreCarpeta);
 
-    if (!archivoMensaje.is_open())
-    {
-        cout << "No se pudo abrir el archivo mensaje.txt\n";
+    if (!archivoMensaje.is_open()) {
+        cout << "No se pudo abrir el archivo de mensajes para la facultad: " << facultadUsuario << endl;
         return;
     }
 
-    while (getline(archivoMensaje, linea))
-    {
+    while (getline(archivoMensaje, linea)) {
         cout << linea << '\n';
     }
 
     archivoMensaje.close();
 }
-
-

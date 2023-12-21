@@ -60,6 +60,7 @@ void generarCertificados(const string &nombreUsuario);
 void enviarListaDifusion();
 void leerListaDifusion(const string& nombreUsuario);
 void verMisCertificados(const string &nombreUsuario);
+string normalizarString(const string& str);
 
 
 #endif
