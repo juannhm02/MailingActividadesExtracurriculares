@@ -8,6 +8,8 @@
         "iosfwd": "cpp",
         "vector": "cpp",
         "__split_buffer": "cpp",
-        "deque": "cpp"
-    }
+        "deque": "cpp",
+        "variablesglobales": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

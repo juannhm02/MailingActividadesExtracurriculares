@@ -8,8 +8,8 @@ using namespace std;
 const string archivoUsuarios = "archivoUsuarios.txt";
 
 // verificarExistenciaUsuario
-bool verificarExistenciaUsuario(const string &nombre)
-{
+bool verificarExistenciaUsuario(const string &nombre, const string &archivoUsuarios) {
+
     ifstream archivo(archivoUsuarios);
 
     if (!archivo.is_open())
@@ -35,15 +35,15 @@ bool verificarExistenciaUsuario(const string &nombre)
 }
 
 // registarUsuario
-void registrarUsuario(const string &nombre, const string &pwd, const string &correo, const string &rol, const string &facultad)
+void registrarUsuario(const string& nombre, const string& pwd, const string& correo, const string& rol, const string& facultad, const string& nombreArchivo)
 {
-    if (verificarExistenciaUsuario(nombre))
+    if (verificarExistenciaUsuario(nombre, nombreArchivo))
     {
         cout << "\nEl usuario ya existe." << endl;
         return;
     }
 
-    ofstream archivo(archivoUsuarios, ios::app);
+    ofstream archivo(nombreArchivo, ios::app);
 
     if (!archivo.is_open())
     {
@@ -56,11 +56,12 @@ void registrarUsuario(const string &nombre, const string &pwd, const string &cor
     cout << "\nUsuario registrado." << endl;
 }
 
+
 // modifcar Rol
 
 void modificarRol(const string &nombre, const string &rol)
 {
-    if (!verificarExistenciaUsuario(nombre))
+    if (!verificarExistenciaUsuario(nombre, "archivoUsuarios.txt"))
     {
         cout << "\nEl usuario no existe." << endl;
         return;
@@ -113,7 +114,7 @@ void modificarRol(const string &nombre, const string &rol)
 void eliminarUsuario(const string &nombre)
 {
     // Verificar si el usuario existe
-    if (!verificarExistenciaUsuario(nombre))
+    if (!verificarExistenciaUsuario(nombre, "archivoUsuarios.txt"))
     {
         cout << "\nEl usuario no existe." << endl;
         return;
@@ -159,7 +160,7 @@ void eliminarUsuario(const string &nombre)
 
 bool iniciarSesion(const string &nombre, const string &pwd)
 {
-    if (!verificarExistenciaUsuario(nombre))
+    if (!verificarExistenciaUsuario(nombre, "archivoUsuarios.txt"))
     {
         cout << "\nEl usuario no existe." << endl;
         return false;
@@ -220,7 +221,7 @@ void mostrarUsuarios()
 
 bool iniciarSesionAdmin(const string &nombre, const string &pwd)
 {
-    if (!verificarExistenciaUsuario(nombre))
+    if (!verificarExistenciaUsuario(nombre, "archivoUsuarios.txt"))
     {
         cout << "\nEl usuario no existe." << endl;
         return false;
@@ -260,7 +261,7 @@ bool iniciarSesionAdmin(const string &nombre, const string &pwd)
 // Iniciar sesion (Director academico) verificando rol "Director Academico"
 bool iniciarSesionDirectorAcademico(const string &nombre, const string &pwd)
 {
-    if (!verificarExistenciaUsuario(nombre))
+    if (!verificarExistenciaUsuario(nombre, "archivoUsuarios.txt"))
     {
         cout << "\nEl usuario no existe." << endl;
         return false;

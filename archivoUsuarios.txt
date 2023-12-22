@@ -1,1 +1,2 @@
 user1,user1,user1@uco.es,Estudiante,Ciencias del Trabajoi02himoj,Juan123,i02himoj@uco.es,Estudiante,Politécnica
+nuevo_usuario,contraseña,correo,rol,facultad

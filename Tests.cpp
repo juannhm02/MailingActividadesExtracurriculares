@@ -22,11 +22,31 @@
 
 using namespace std;
 
+void limpiarArchivoUsuariosTest() {
+    ofstream archivo("usuarios_test.txt", ios::trunc);
+    archivo.close();
+}
+
 
 
 void testBuscarActividadPorID_Existente() {
     
-    crearActividadConDatos();
+    Actividad act;
+    act.id = 1;
+    act.nombre = "Actividad de prueba";
+    act.descripcion = "Descripción de prueba";
+    act.tipo = "Tipo de prueba";
+    act.estado = "Estado de prueba";
+    act.aforo = 10;
+    act.fecha = "Fecha de prueba";
+    act.hora = "Hora de prueba";
+    act.ubicacion = "Ubicación de prueba";
+    act.ponente = "Ponente de prueba";
+    act.esPago = "Pago de prueba";
+    act.precio = 100;
+    act.inscritos = 0;
+
+    crearActividadConDatos(act);
     // crea una actividad y rellena sus campos con datos de prueba
     assert(buscarActividadPorID(1) == true); // Debe retornar verdadero si la actividad existe
 }
@@ -48,26 +68,24 @@ void testBuscarActividadPorID_LimiteSuperior() {
 }
 
 void testVerificarExistenciaUsuario_UsuarioExiste() {
-    ofstream archivo("usuarios_test.txt", ios::trunc); // Crea o limpia el archivo
+    limpiarArchivoUsuariosTest();
+    ofstream archivo("usuarios_test.txt");
     archivo << "usuario_existente,contraseña,correo,rol,facultad\n";
     archivo.close();
-
-    assert(verificarExistenciaUsuario("usuario_existente") == true);
+    assert(verificarExistenciaUsuario("usuario_existente", "usuarios_test.txt") == true);
 }
 
 void testVerificarExistenciaUsuario_UsuarioNoExiste() {
-    ofstream archivo("usuarios_test.txt", ios::trunc);
+    limpiarArchivoUsuariosTest();
+    ofstream archivo("usuarios_test.txt");
     archivo << "usuario_existente,contraseña,correo,rol,facultad\n";
     archivo.close();
-
-    assert(verificarExistenciaUsuario("usuario_no_existente") == false);
+    assert(verificarExistenciaUsuario("usuario_no_existente", "usuarios_test.txt") == false);
 }
 
 void testRegistrarUsuario_UsuarioNuevo() {
-    ofstream archivo("usuarios_test.txt", ios::trunc);
-    archivo.close();
-
-    registrarUsuario("nuevo_usuario", "contraseña", "correo", "rol", "facultad");
+    limpiarArchivoUsuariosTest();
+    registrarUsuario("nuevo_usuario", "contraseña", "correo", "rol", "facultad", "usuarios_test.txt");
     ifstream archivoVerificar("usuarios_test.txt");
     string contenido;
     getline(archivoVerificar, contenido);
@@ -76,29 +94,35 @@ void testRegistrarUsuario_UsuarioNuevo() {
 }
 
 void testRegistrarUsuario_UsuarioExistente() {
-    ofstream archivo("usuarios_test.txt", ios::trunc);
-    archivo << "usuario_existente,contraseña,correo,rol,facultad\n";
-    archivo.close();
+    limpiarArchivoUsuariosTest();
+    // Primero, registra un usuario para asegurarte de que exista
+    registrarUsuario("usuario_existente", "contraseña", "correo", "rol", "facultad", "usuarios_test.txt");
 
-    // Redirecciona el stream de salida para capturar el mensaje de consola
+    // Redirecciona el stream de salida
     stringstream buffer;
     streambuf *old = cout.rdbuf(buffer.rdbuf());
 
-    registrarUsuario("usuario_existente", "contraseña", "correo", "rol", "facultad");
+    // Intenta registrar el mismo usuario de nuevo
+    registrarUsuario("usuario_existente", "contraseña", "correo", "rol", "facultad", "usuarios_test.txt");
     
     // Restaura el stream de salida original
     cout.rdbuf(old);
 
+    // Comprueba si el mensaje esperado está en el buffer
     assert(buffer.str().find("El usuario ya existe") != string::npos);
 }
 
-// Este es un ejemplo de cómo ejecutar las pruebas.
+
 int main() {
     testBuscarActividadPorID_Existente();
     testBuscarActividadPorID_NoExistente();
     testBuscarActividadPorID_LimiteInferior();
     testBuscarActividadPorID_LimiteSuperior();
+    testVerificarExistenciaUsuario_UsuarioExiste();
+    testVerificarExistenciaUsuario_UsuarioNoExiste();
+    testRegistrarUsuario_UsuarioNuevo();
+    testRegistrarUsuario_UsuarioExistente();
 
-    cout << "Todas las pruebas pasaron exitosamente." << endl;
+    cout << "TODAS LAS PRUEBAS HAN SIDO PASADAS CON ÉXITO. ENHORABUENA!!!" << endl;
     return 0;
 }

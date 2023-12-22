@@ -10,6 +10,7 @@
 #include <sys/types.h>
 
 #include "gestionarActividad.h"
+#include "VariablesGlobales.h"
 #include "Usuario.h"
 
 extern std::vector<std::string> facultadesAdicionales;
