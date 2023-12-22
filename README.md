@@ -57,10 +57,12 @@ Para ejecutar la aplicación, desde el directorio /src, es decir en el que nos e
 Para ejecutar los tests que comprueban el funcionamiento de nuestro sistema, deberemos de seguir los siguientes pasos:
 
 ```c++
-//De esta forma podremos ver todo el procedimiento donde van ejecutándose cada uno de estos
-make test //Entendiendo que previamente se habrá hecho un make clean de los archivos ya existentes
+
+make test 
 ```
-Si lo que queremos es ver que finalmente han pasado todos los test con éxito, realizaremos el mismo procedimiento que para ejecutar nuestra aplicación, pero cambiando el ejecutable por test, de la forma:
+De esta forma podremos ver todo el procedimiento donde van ejecutándose cada uno de estos, entendiendo que previamente se habrá hecho un make clean de los archivos ya existentes. 
+
+De lo contrario, si lo que queremos es ver que finalmente han pasado todos los test con éxito, realizaremos el mismo procedimiento que para ejecutar nuestra aplicación, pero cambiando el ejecutable por test, de la forma:
 
 ```c++
 ./tests
