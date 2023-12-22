@@ -4,9 +4,10 @@
 
 #include "gestionarActividad.h"
 #include "Usuario.h"
+#include "VariablesGlobales.h"
 #include "menu.h"
 
-vector<string> facultadesAdicionales;
+extern std::vector<std::string> facultadesAdicionales; 
 
 using namespace std;
 
